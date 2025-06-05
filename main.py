@@ -4,13 +4,14 @@ import numpy
 import math
 
 
+
 # Ask how many gRNAs you want to compare
 print("""
-╔═╗░╔╦═══╦════╗  ░╔╗╔═══╦═══╦═══╦═══╦═══╦═══╦═══╦═╗░╔╦════╗  ╔═══╦═══╦═══╦╗░╔╦═══╦═══╦════╦═══╗
-║║╚╗║║╔═╗║╔╗╔╗║  ╔╝║║╔═╗║╔═╗║╔═╗║╔══╣╔═╗║╔═╗║╔══╣║╚╗║║╔╗╔╗║  ║╔═╗║╔═╗║╔═╗║║░║║╔═╗║╔═╗║╔╗╔╗║╔══╝
-║╔╗╚╝║║░║╠╝║║╚╝  ╚╗║║║║║║║║║║╚═╝║╚══╣╚═╝║║░╚╣╚══╣╔╗╚╝╠╝║║╚╝  ║║░║║║░╚╣║░╚╣║░║║╚═╝║║░║╠╝║║╚╣╚══╗
-║║╚╗║║║░║║░║║░░  ░║║║║║║║║║║║╔══╣╔══╣╔╗╔╣║░╔╣╔══╣║╚╗║║░║║░░  ║╚═╝║║░╔╣║░╔╣║░║║╔╗╔╣╚═╝║░║║░║╔══╝
-║║░║║║╚═╝║░║║░░  ╔╝╚╣╚═╝║╚═╝║║░░║╚══╣║║╚╣╚═╝║╚══╣║░║║║░║║░░  ║╔═╗║╚═╝║╚═╝║╚═╝║║║╚╣╔═╗║░║║░║╚══╗
+╔═╗░╔╦═══╦════╗░░░╔╗╔═══╦═══╦═══╦═══╦═══╦═══╦═══╦═╗░╔╦════╗  ╔═══╦═══╦═══╦╗░╔╦═══╦═══╦════╦═══╗
+║║╚╗║║╔═╗║╔╗╔╗║░░╔╝║║╔═╗║╔═╗║╔═╗║╔══╣╔═╗║╔═╗║╔══╣║╚╗║║╔╗╔╗║  ║╔═╗║╔═╗║╔═╗║║░║║╔═╗║╔═╗║╔╗╔╗║╔══╝
+║╔╗╚╝║║░║╠╝║║╚╝░░╚╗║║║║║║║║║║╚═╝║╚══╣╚═╝║║░╚╣╚══╣╔╗╚╝╠╝║║╚╝  ║║░║║║░╚╣║░╚╣║░║║╚═╝║║░║╠╝║║╚╣╚══╗
+║║╚╗║║║░║║░║║░░░░░║║║║║║║║║║║╔══╣╔══╣╔╗╔╣║░╔╣╔══╣║╚╗║║░║║░░  ║╚═╝║║░╔╣║░╔╣║░║║╔╗╔╣╚═╝║░║║░║╔══╝
+║║░║║║╚═╝║░║║░░ ╔╝╚╣╚═╝║╚═╝║║░░║╚══╣║║╚╣╚═╝║╚══╣║░║║║░║║░░  ║╔═╗║╚═╝║╚═╝║╚═╝║║║╚╣╔═╗║░║║░║╚══╗
 ╚╝░╚═╩═══╝░╚╝░░  ╚══╩═══╩═══╩╝░░╚═══╩╝╚═╩═══╩═══╩╝░╚═╝░╚╝░░  ╚╝░╚╩═══╩═══╩═══╩╝╚═╩╝░╚╝░╚╝░╚═══╝
 """)
 numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
@@ -32,6 +33,7 @@ for i, sequence in enumerate(grna_sequences):
         database="nt",
         sequence=sequence,
         entrez_query="txid9606[ORGN]"
+        
     )
 
     # Save the result with a unique filename to avoid overwriting
@@ -55,10 +57,17 @@ for i, sequence in enumerate(grna_sequences):
                 match_type = "Transcript/mRNA"
             else:
                 match_type = "Genomic"
+            # Simple check to flag e-value
+            if hsp.expect < 0.01:
+                evalue = "❗ " + f"{hsp.expect:.2e}"
+            else:
+                evalue = "❓ " + f"{hsp.expect:.2e}"
 
+            #formats and parses the info  
             print("\n--- Match ---")
             print("Type:", match_type)
             print("Title:", title)
             print("Length:", alignment.length)
-            print("E-value:", hsp.expect)
+            print("E-value:", evalue)               
             print("Match Snippet:", hsp.sbjct[:60] + "...")
+

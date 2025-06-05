@@ -1,1 +1,0 @@
-A Python program to compare guides for genetic engineering for science fair

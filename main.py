@@ -11,14 +11,14 @@ grna_sequences = []
 
 # Collect the sequences based on the number specified
 for i in range(numberof_grnas):
-    seq = input(f"Enter sequence for gRNA #{i + 1}: ").strip().upper()
+    seq = input(f"Enter sequence for gRNA #\n{i + 1}: ").strip().upper()
     grna_sequences.append(seq)
 
 print("Starting BLAST search...")
 
 # Run BLAST for each gRNA sequence in the list
 for i, sequence in enumerate(grna_sequences):
-    print(f"\nRunning BLAST for gRNA #{i + 1}...")
+    print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
     result_handle = NCBIWWW.qblast(
         program="blastn",
         database="nt",

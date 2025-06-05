@@ -1,4 +1,8 @@
 from Bio.Blast import NCBIWWW, NCBIXML
+import random
+import numpy
+import math
+
 
 # Ask how many gRNAs you want to compare
 numberof_grnas = int(input("How many gRNAs are you comparing? ").strip())

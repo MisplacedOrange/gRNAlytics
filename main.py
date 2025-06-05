@@ -5,6 +5,14 @@ import math
 
 
 # Ask how many gRNAs you want to compare
+print("""
+╔═╗░╔╦═══╦════╗  ░╔╗╔═══╦═══╦═══╦═══╦═══╦═══╦═══╦═╗░╔╦════╗  ╔═══╦═══╦═══╦╗░╔╦═══╦═══╦════╦═══╗
+║║╚╗║║╔═╗║╔╗╔╗║  ╔╝║║╔═╗║╔═╗║╔═╗║╔══╣╔═╗║╔═╗║╔══╣║╚╗║║╔╗╔╗║  ║╔═╗║╔═╗║╔═╗║║░║║╔═╗║╔═╗║╔╗╔╗║╔══╝
+║╔╗╚╝║║░║╠╝║║╚╝  ╚╗║║║║║║║║║║╚═╝║╚══╣╚═╝║║░╚╣╚══╣╔╗╚╝╠╝║║╚╝  ║║░║║║░╚╣║░╚╣║░║║╚═╝║║░║╠╝║║╚╣╚══╗
+║║╚╗║║║░║║░║║░░  ░║║║║║║║║║║║╔══╣╔══╣╔╗╔╣║░╔╣╔══╣║╚╗║║░║║░░  ║╚═╝║║░╔╣║░╔╣║░║║╔╗╔╣╚═╝║░║║░║╔══╝
+║║░║║║╚═╝║░║║░░  ╔╝╚╣╚═╝║╚═╝║║░░║╚══╣║║╚╣╚═╝║╚══╣║░║║║░║║░░  ║╔═╗║╚═╝║╚═╝║╚═╝║║║╚╣╔═╗║░║║░║╚══╗
+╚╝░╚═╩═══╝░╚╝░░  ╚══╩═══╩═══╩╝░░╚═══╩╝╚═╩═══╩═══╩╝░╚═╝░╚╝░░  ╚╝░╚╩═══╩═══╩═══╩╝╚═╩╝░╚╝░╚╝░╚═══╝
+""")
 numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
 
 grna_sequences = []
@@ -44,9 +52,9 @@ for i, sequence in enumerate(grna_sequences):
 
             # Simple check to guess if it is transcript or genomic DNA
             if "mRNA" in title or "transcript" in title:
-                match_type = "Transcript/mRNA (probably)"
+                match_type = "Transcript/mRNA"
             else:
-                match_type = "Genomic (probably)"
+                match_type = "Genomic"
 
             print("\n--- Match ---")
             print("Type:", match_type)

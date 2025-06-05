@@ -5,13 +5,13 @@ import math
 
 
 # Ask how many gRNAs you want to compare
-numberof_grnas = int(input("How many gRNAs are you comparing? ").strip())
+numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
 
 grna_sequences = []
 
 # Collect the sequences based on the number specified
 for i in range(numberof_grnas):
-    seq = input(f"Enter sequence for gRNA #\n{i + 1}: ").strip().upper()
+    seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
     grna_sequences.append(seq)
 
 print("Starting BLAST search...")

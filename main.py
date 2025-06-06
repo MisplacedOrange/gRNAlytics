@@ -27,6 +27,15 @@ for i in range(numberof_grnas):
 
 print("Starting BLAST search...")
 
+
+essential_genes = set()
+with open("gene_essentiality.txt", "rt") as file:
+    for line in file:
+        parts = line.strip().split(",")
+        if len(parts) == 2:
+            non_essential, essential = parts
+            essential_genes.add(essential)
+            
 # Run BLAST for each gRNA sequence in the list
 for i, sequence in enumerate(grna_sequences):
     print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
@@ -64,21 +73,16 @@ for i, sequence in enumerate(grna_sequences):
             else:
                 evalue = "❓ " + f"{hsp.expect:.2e}"
 
+           # Essential gene check here pls work this took forever and im now braindead
+            if any(gene in title for gene in essential_genes):
+                gene_status = "Good to use"
+            else:
+                gene_status = "This is dangerous"
+
             print("\n--- Match ---")
             print("Type:", match_type)
             print("Title:", title)
             print("Length:", alignment.length)
             print("E-value:", evalue)               
             print("Match Snippet:", hsp.sbjct[:60] + "...")
-
-#insert essential code here
-#ESENTIAL GENES BELOW
-with open("gene_essentiality.txt.gz", "rt") as file:
-    for line in file:
-        words = line.strip().split(",")
-        if len(words) == 2:
-            NE, E = words
-            (f"Essential: {E}, Non-Essential: {NE}")
-
-        #GOING TO CONTINUE HERE WITH ACTUALLY MAKING IT NOW COPARE THE RESULTS TO ANY OF THE ABOVE CODE WHERE ITS ESSENTIAL GENES
-
+            print("Gene status:", gene_status)

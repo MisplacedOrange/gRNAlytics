@@ -1,17 +1,30 @@
 from Bio.Blast import NCBIWWW, NCBIXML
+NCBIWWW.email = "nadeemaffan23@gmail.com"
+
 import random
 import numpy
 import math
+import difflib  # 👈 Added for fuzzy matching
 
 # Ask how many gRNAs you want to compare
 print("""
+
+
+
+
+
+
+
+
 
 ██████╗░██╗░██████╗░█████╗░██╗░░░░░░█████╗░██╗███╗░░░███╗███████╗██████╗░██╗
 ██╔══██╗██║██╔════╝██╔══██╗██║░░░░░██╔══██╗██║████╗░████║██╔════╝██╔══██╗╚═╝
 ██║░░██║██║╚█████╗░██║░░╚═╝██║░░░░░███████║██║██╔████╔██║█████╗░░██████╔╝░░░
 ██║░░██║██║░╚═══██╗██║░░██╗██║░░░░░██╔══██║██║██║╚██╔╝██║██╔══╝░░██╔══██╗░░░
 ██████╔╝██║██████╔╝╚█████╔╝███████╗██║░░██║██║██║░╚═╝░██║███████╗██║░░██║██╗
-╚═════╝░╚═╝╚═════╝░░╚════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝
+╚═════╝░╚═╝╚═════╝░░╚════╝░╚══════╝╚═╝░░╚═╝╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝╚
+
+
 
 █▄░█ █▀█ ▀█▀   ▄█ █▀█ █▀█ ▀░▄▀   ▄▀█ █▀▀ █▀▀ █░█ █▀█ ▄▀█ ▀█▀ █▀▀
 █░▀█ █▄█ ░█░   ░█ █▄█ █▄█ ▄▀░▄   █▀█ █▄▄ █▄▄ █▄█ █▀▄ █▀█ ░█░ ██▄
@@ -27,15 +40,12 @@ for i in range(numberof_grnas):
 
 print("Starting BLAST search...")
 
-
 essential_genes = set()
-with open("gene_essentiality.txt", "rt") as file:
+with open("AchillesCommonEssentialControls.csv", "rt") as file:
     for line in file:
-        parts = line.strip().split(",")
-        if len(parts) == 2:
-            non_essential, essential = parts
-            essential_genes.add(essential)
-            
+        gene = line.strip().split(",")[0]
+        essential_genes.add(gene.upper())
+
 # Run BLAST for each gRNA sequence in the list
 for i, sequence in enumerate(grna_sequences):
     print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
@@ -62,22 +72,26 @@ for i, sequence in enumerate(grna_sequences):
             hsp = alignment.hsps[0]
             title = alignment.title
 
-            # Simple check to guess if it is transcript or genomic DNA
             if "mRNA" in title or "transcript" in title:
                 match_type = "Transcript/mRNA"
             else:
                 match_type = "Genomic"
-            # Simple check to flag e-value
+
             if hsp.expect < 0.01:
                 evalue = "❗ " + f"{hsp.expect:.2e}"
             else:
                 evalue = "❓ " + f"{hsp.expect:.2e}"
 
-           # Essential gene check here pls work this took forever and im now braindead
-            if any(gene in title for gene in essential_genes):
-                gene_status = "Good to use"
+            # Fuzzy gene matching
+            title_upper = title.upper()
+            best_match = difflib.get_close_matches(
+                title_upper, essential_genes, n=1, cutoff=0.6
+            )
+
+            if best_match:
+                gene_status = "✅ Essential gene (Good to target)"
             else:
-                gene_status = "This is dangerous"
+                gene_status = "⚠️ Non-essential or unknown"
 
             print("\n--- Match ---")
             print("Type:", match_type)

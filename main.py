@@ -1,6 +1,4 @@
 from Bio.Blast import NCBIWWW, NCBIXML
-NCBIWWW.email = "nadeemaffan23@gmail.com"
-
 import random
 import numpy
 import math

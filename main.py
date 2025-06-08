@@ -76,6 +76,8 @@ for i, sequence in enumerate(grna_sequences):
                 match_type = "Transcript/mRNA"
             else:
                 match_type = "Genomic"
+            
+            # flagging poor matches
 
             if hsp.expect < 0.01:
                 evalue = "❗ " + f"{hsp.expect:.2e}"
@@ -92,6 +94,8 @@ for i, sequence in enumerate(grna_sequences):
                 gene_status = "✅ Essential gene (Good to target)"
             else:
                 gene_status = "⚠️ Non-essential or unknown"
+
+            # Prints out Data Table
 
             print("\n--- Match ---")
             print("Type:", match_type)

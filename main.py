@@ -2,14 +2,10 @@ from Bio.Blast import NCBIWWW, NCBIXML
 import random
 import numpy
 import math
-import difflib  # 👈 Added for fuzzy matching
+import difflib  # Added for fuzzy matching will hopefully be more accurate with the gene flagging
 
 # Ask how many gRNAs you want to compare
 print("""
-
-
-
-
 
 
 

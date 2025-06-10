@@ -4,9 +4,8 @@ import numpy
 import math
 import difflib  # Added for fuzzy matching will hopefully be more accurate with the gene flagging
 
-# Ask how many gRNAs you want to compare
+# Ask how many gRNAs I want to compare
 print("""
-
 
 
 
@@ -22,6 +21,8 @@ print("""
 
 █▄░█ █▀█ ▀█▀   ▄█ █▀█ █▀█ ▀░▄▀   ▄▀█ █▀▀ █▀▀ █░█ █▀█ ▄▀█ ▀█▀ █▀▀
 █░▀█ █▄█ ░█░   ░█ █▄█ █▄█ ▄▀░▄   █▀█ █▄▄ █▄▄ █▄█ █▀▄ █▀█ ░█░ ██▄
+
+
 """)
 numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
 
@@ -37,15 +38,16 @@ print("Starting BLAST search...")
 essential_genes = set()
 with open("AchillesCommonEssentialControls.csv", "rt") as file:
     for line in file:
-        gene = line.strip().split(",")[0]
-        essential_genes.add(gene.upper())
+        gene_raw = line.strip().split(",")[0]
+        gene_clean = gene_raw.split("(")[0].strip().upper()  # removes stuff like " (6059)"
+        essential_genes.add(gene_clean)
 
 # Run BLAST for each gRNA sequence in the list
 for i, sequence in enumerate(grna_sequences):
     print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
     result_handle = NCBIWWW.qblast(
         program="blastn",
-        database="nt",
+        database="refseq_genomic",
         sequence=sequence,
         entrez_query="txid9606[ORGN]"
     )

@@ -36,6 +36,8 @@ for i in range(numberof_grnas):
 
 print("Starting BLAST search...")
 
+
+#BELOW WE WILL BE DEFINING ALL THE VARIABLES AND STUFF WE WILL BE THEN CALCULATING ALTER ON IN THE CODE 
 # Load essential genes from CSV file
 essential_genes = set()
 with open("AchillesCommonEssentialControls.csv", "rt") as file:
@@ -45,7 +47,7 @@ with open("AchillesCommonEssentialControls.csv", "rt") as file:
         essential_genes.add(gene_clean)
 
 def extract_gene_info(title: str) -> Tuple[str, str]:
-    # Extract gene name and symbol from BLAST title with multiple patterns
+    # Extract gene name and symbol from BLAST title with multiple patterns tbh i don't get this part al roy cuz like google helped apparently
     gene_patterns = [
         r"gene[:\s]+([A-Z0-9\-_]+)",      #google was used to help write this portion cuz it was rlly hard and we couldn't figure it out 
         r"\(([A-Z0-9\-_]+)\)",
@@ -66,13 +68,13 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
                     gene_candidate, essential_genes, n=1, cutoff=0.8
                 )
                 if close_matches:
-                    return close_matches[0], "Essential (fuzzy match)"
+                    return close_matches[0], "Essential 🚩🚩🚩🚩🚩🚩🚩"
                 else:
-                    return gene_candidate, "Non-essential/Not_Known"
+                    return gene_candidate, " Probably  Non essential/  Unknown"
     
-    return "Not_Known", "Not_Known"
+    return "Unknown", "Unknown"
 #if gene is unknown say its unknown
-def calculate_specificity_score(alignments: List) -> int:
+def calculate_score(alignments: List) :  #expected to return variable hopefully figners
     # Calculte the scores 
     base_score = 100
     penalty = 0
@@ -83,7 +85,7 @@ def calculate_specificity_score(alignments: List) -> int:
     for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
-        # Penalty based on e-value (lower e-value means higher chance of cutting off target so higher penalty
+        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
         if hsp.expect < 1e-10:
             penalty += 20
         elif hsp.expect < 1e-5:
@@ -102,7 +104,7 @@ def calculate_specificity_score(alignments: List) -> int:
         elif identity_percent > 70:
             penalty += 5
         
-        # Additional penalty for transcript matches (potential off-targets)
+        # Additional penalty for transcript matches (might potentil off-targets)
         if "mRNA" in alignment.title or "transcript" in alignment.title:
             penalty += 3
         
@@ -112,19 +114,19 @@ def calculate_specificity_score(alignments: List) -> int:
     return max(0, base_score - int(penalty))
 
 scores = []
-
-# Process each gRNA sequence
+#now we can
+# proces each gRNA sequenc
 for i, sequence in enumerate(grna_sequences):
     print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
     
     # Run BLAST with enhanced parameters for better analysis
     result_handle = NCBIWWW.qblast(
-        program="blastn-short",
+        program="blastn",
         database="nt",
         sequence=sequence,
-        entrez_query="txid9606[ORGN]",  # Human sequences only
-        hitlist_size=50,  # Get more results for comprehensive analysis
-        word_size=7  # Smaller word size better for short gRNA sequences
+        entrez_query="txid9606[ORGN]",  # Human sequences ony
+        hitlist_size=50,  # Get more results for bigger analysis 
+        word_size=7  # Smaller word size better for short gRNA sequeces
     )
 
     # Save BLAST results to XML file
@@ -135,8 +137,9 @@ for i, sequence in enumerate(grna_sequences):
     with open(f"blast_result_{i + 1}.xml") as result_file:
         blast_record = NCBIXML.read(result_file)
 
-    # Calculate enhanced specificity score
-    specificity_score = calculate_specificity_score(blast_record.alignments)
+    # Calculate enhanced score
+    specificity_score = calculate_score(blast_record.alignments)
+    #we referenced this above earlier before we even ran the blast
 
     if not blast_record.alignments:
         print("No matches found - excellent specificity!")
@@ -167,7 +170,7 @@ for i, sequence in enumerate(grna_sequences):
                 evalue_status = "✅ Low significance"
                 evalue_display = f"{hsp.expect:.2e}"
 
-            # Extract gene information with enhanced detection
+            # Extract gene info with enhanced detection
             gene_name, gene_status = extract_gene_info(title)
             
             # Calculate identity percentage

@@ -31,10 +31,12 @@ grna_sequences = []
 
 # Get all gRNA sequences from user
 for i in range(numberof_grnas):
-    seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
-    grna_sequences.append(seq)
-
-    Chromosome = (input("What chromsome is your gene in that you ran to find these gRNAs? "))
+    while True:
+        seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
+        if set(seq).issubset({'A', 'T', 'C', 'G'}) and len(seq) > 0:
+            grna_sequences.append(seq)
+            break
+        print("❌ Invalid sequence! Use only A, T, C, G")
     
 print("Starting BLAST search...")
 
@@ -76,21 +78,21 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
     
     return "Unknown", "Unknown"
 #if gene is unknown say its unknown
-def calculate_score(blast_results) :  #expected to return variable hopefully works 
+def calculate_score(alignments) :  #expected to return variable hopefully works 
     # Calculte the scores 
     score = 100
     
-    if not alignment:
+    if not alignments:
         return score  # No off-targets found is good
     
-    for i, alignment in enumerate(alignment[:10]):  # Analyze top 10 hits
+    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
         # Penalty based on e-value, the lower the e-value, the higher chance of cutting off target so higher penalty
         if hsp.expect < 1e-10:
-            penalty += 20
+            score -= 20
         elif hsp.expect < 1e-5:
-            penalty += 10
+            score -= 10
         elif hsp.expect < 0.01:
             score -= 5   # Bad
         else:
@@ -124,7 +126,7 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
 scores = []
 #now we can process each gRNA sequence
 for i, sequence in enumerate(grna_sequences):
-    print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
+    print(f"🧬 Processing gRNA {i+1}/{len(grna_sequences)} ({sequence[:15]}...)")
     
     # Run BLAST with enhanced parameters for better analysis
     result_handle = NCBIWWW.qblast(

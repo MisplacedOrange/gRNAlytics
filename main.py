@@ -74,48 +74,51 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
     
     return "Unknown", "Unknown"
 #if gene is unknown say its unknown
-def calculate_score(alignments: List) :  #expected to return variable hopefully figners
+def calculate_score(blast_results) :  #expected to return variable hopefully works 
     # Calculte the scores 
-    base_score = 100
-    penalty = 0
+    score = 100
     
     if not alignments:
-        return base_score  # If no Off-target is found, then it's good
+        return base_score  # No off-targets found is good
     
     for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
-        # Penalty based on e-value, lower e-value means higher chance of cutting off target so higher penalty
+        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
         if hsp.expect < 1e-10:
             penalty += 20
         elif hsp.expect < 1e-5:
             penalty += 10
         elif hsp.expect < 0.01:
-            penalty += 5
+            score -= 5   # not great
         else:
-            penalty += 1
+            score -= 1   # probably ok
         
-        # Penalty based on sequence identity percentage
-        identity_percent = (hsp.identities / hsp.align_length) * 100
-        if identity_percent > 90:
-            penalty += 15
-        elif identity_percent > 80:
-            penalty += 10
-        elif identity_percent > 70:
-            penalty += 5
+        # also penalize high sequence similarity
+        percent_match = (hsp.identities / hsp.align_length) * 100
+        if percent_match > 90:
+            score -= 15  # way too similar
+        elif percent_match > 80:
+            score -= 10
+        elif percent_match > 70:
+            score -= 5
         
-        # Additional penalty for transcript matches (might potentil off-targets)
+        # penalize mRNA hits a bit more since they might be transcripts
         if "mRNA" in alignment.title or "transcript" in alignment.title:
-            penalty += 3
+            score -= 3
         
-        # Reduce penalty weight for later matches (less important)
-        penalty = penalty * (0.8 ** i)
+        # later hits matter less than the first few
+        if i > 2:  # after the first 3 hits, reduce the penalty
+            score += 2  # give back some points
     
-    return max(0, base_score - int(penalty))
+    # dont go below 0
+    if score < 0:
+        score = 0
+    
+    return score
 
 scores = []
-#now we can
-# proces each gRNA sequenc
+#now we can process each gRNA sequence
 for i, sequence in enumerate(grna_sequences):
     print(f"\nRunning BLAST for gRNA #{i + 1}...\n")
     

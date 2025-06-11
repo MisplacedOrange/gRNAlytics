@@ -78,10 +78,10 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
     # Calculte the scores 
     score = 100
     
-    if not alignments:
-        return base_score  # No off-targets found is good
+    if not alignment:
+        return score  # No off-targets found is good
     
-    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
+    for i, alignment in enumerate(alignment[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
         # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty

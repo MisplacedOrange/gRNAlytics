@@ -34,6 +34,8 @@ for i in range(numberof_grnas):
     seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
     grna_sequences.append(seq)
 
+    Chromosome = (input("What chromsome is your gene in that you ran to find these gRNAs? "))
+    
 print("Starting BLAST search...")
 
 
@@ -78,17 +80,23 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
     # Calculte the scores 
     score = 100
     
-    if not alignments:
-        return base_score  # No off-targets found is good
+    if not blast_results:
+        return score  # no hits = perfect
     
-    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
-        hsp = alignment.hsps[0]
+    
+    # look at the top 10 matches and penalize based on how bad they are
+    for i, alignment in enumerate(blast_results[:10]):
+        hsp = alignment.hsps[0]  # best hit for this alignment
         
-        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
-        if hsp.expect < 1e-10:
-            penalty += 20
-        elif hsp.expect < 1e-5:
-            penalty += 10
+        if Chromosome in alignment.title:
+            continue  # skip the actual target
+    
+        # penalize based on how likely this is to be cut
+        # lower e-value = more likely to cut = worse
+        if hsp.expect < 0.0000000001:  # 1e-10
+            score -= 20  # really bad
+        elif hsp.expect < 0.00001:  # 1e-5
+            score -= 10  # pretty bad
         elif hsp.expect < 0.01:
             score -= 5   # not great
         else:
@@ -102,6 +110,8 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
             score -= 10
         elif percent_match > 70:
             score -= 5
+    
+    
         
         # penalize mRNA hits a bit more since they might be transcripts
         if "mRNA" in alignment.title or "transcript" in alignment.title:

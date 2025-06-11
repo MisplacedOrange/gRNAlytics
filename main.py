@@ -53,23 +53,23 @@ with open("AchillesCommonEssentialControls.csv", "rt") as file:
         essential_genes.add(gene_clean)
 
 def extract_gene_info(title: str) -> Tuple[str, str]:
-    # Extract gene name and symbol from BLAST title with multiple patterns tbh i don't get this part al roy cuz like google helped apparently
+    # Extract gene name and symbol from BLAST title -->
     gene_patterns = [
-        r"gene[:\s]+([A-Z0-9\-_]+)",      #google was used to help write this portion cuz it was rlly hard and we couldn't figure it out 
-        r"\(([A-Z0-9\-_]+)\)",
+        r"gene[:\s]+([A-Z0-9\-_]+)",     # Scans for the gene name, which can include capital letters, digits, dashes, and underscores
+        r"\(([A-Z0-9\-_]+)\)",  # Looks for gene names inside parentheses
         r"symbol[:\s]+([A-Z0-9\-_]+)",
         r"LOC\d+[,\s]+([A-Z0-9\-_]+)"
     ]
-    #google help stop
+
     for pattern in gene_patterns:
         match = re.search(pattern, title, re.IGNORECASE)
         if match:
             gene_candidate = match.group(1).upper()
-            # Check if gene is in essential genes set #refernced the ahillescommonsessentials set
+            # Checks if gene is in AchillesCommonEssentialControls.csv
             if gene_candidate in essential_genes:
                 return gene_candidate, "Essential"
             else:
-                # Try fuzzy matching for partial matches or any direct matches too i think idrmb tbh
+                # Checks if gene is similar to any essential genes
                 close_matches = difflib.get_close_matches(
                     gene_candidate, essential_genes, n=1, cutoff=0.8
                 )
@@ -78,8 +78,9 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
                 else:
                     return gene_candidate, " Probably  Non essential/  Unknown"
     
-    return "Unknown", "Unknown"
-#if gene is unknown say its unknown
+    # If gene is unknown, returns unknown
+    return "Unknown", "Unknown" 
+
 def calculate_score(alignments, target_chromosome):
     score = 100
 
@@ -87,10 +88,10 @@ def calculate_score(alignments, target_chromosome):
         return score  # No off-targets = perfect score
 
     for i, alignment in enumerate(alignments[:10]):
-        title = alignment.title.lower()  # Needed for chromosome check
+        title = alignment.title.lower()  # Essential for Chromosome check
         hsp = alignment.hsps[0]
 
-        # Skip if on the same chromosome as the intended target
+        # Skip if same chromosome as the intended target
         if f"chromosome {target_chromosome}" in title:
             continue
 
@@ -113,7 +114,7 @@ def calculate_score(alignments, target_chromosome):
         elif percent_match > 70:
             score -= 5
 
-    return max(0, score)
+        return max(0, score)
 
         
         # penalize mRNA hits a bit more since they might be transcripts
@@ -122,9 +123,9 @@ def calculate_score(alignments, target_chromosome):
         
         # later hits matter less than the first few
     if i > 2:  # after the first 3 hits, reduce the penalty
-            score += 2  # give back some points
+            score += 2  # Point Refund
     
-    # dont go below 0
+    # Prevents Negatives
     if score < 0:
         score = 0
     

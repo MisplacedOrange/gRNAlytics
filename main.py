@@ -68,7 +68,7 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
                     gene_candidate, essential_genes, n=1, cutoff=0.8
                 )
                 if close_matches:
-                    return close_matches[0], "Essential 🚩🚩🚩🚩🚩🚩🚩"
+                    return close_matches[0], "Essential 🚩"
                 else:
                     return gene_candidate, " Probably  Non essential/  Unknown"
     
@@ -80,12 +80,12 @@ def calculate_score(alignments: List) :  #expected to return variable hopefully 
     penalty = 0
     
     if not alignments:
-        return base_score  # No off-targets found is good
+        return base_score  # If no Off-target is found, then it's good
     
     for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
-        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
+        # Penalty based on e-value, lower e-value means higher chance of cutting off target so higher penalty
         if hsp.expect < 1e-10:
             penalty += 20
         elif hsp.expect < 1e-5:

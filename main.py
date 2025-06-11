@@ -34,6 +34,8 @@ for i in range(numberof_grnas):
     seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
     grna_sequences.append(seq)
 
+    Chromosome = (input("What chromsome is your gene in that you ran to find these gRNAs? "))
+    
 print("Starting BLAST search...")
 
 
@@ -78,10 +80,10 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
     # Calculte the scores 
     score = 100
     
-    if not alignment:
-        return score  # No off-targets found is good
+    if not alignments:
+        return base_score  # No off-targets found is good
     
-    for i, alignment in enumerate(alignment[:10]):  # Analyze top 10 hits
+    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
         # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
@@ -102,6 +104,8 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
             score -= 10
         elif percent_match > 70:
             score -= 5
+    
+    
         
         # penalize mRNA hits a bit more since they might be transcripts
         if "mRNA" in alignment.title or "transcript" in alignment.title:

@@ -86,20 +86,20 @@ def calculate_score(blast_results) :  #expected to return variable hopefully wor
     for i, alignment in enumerate(alignment[:10]):  # Analyze top 10 hits
         hsp = alignment.hsps[0]
         
-        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
+        # Penalty based on e-value, the lower the e-value, the higher chance of cutting off target so higher penalty
         if hsp.expect < 1e-10:
             penalty += 20
         elif hsp.expect < 1e-5:
             penalty += 10
         elif hsp.expect < 0.01:
-            score -= 5   # not great
+            score -= 5   # Bad
         else:
-            score -= 1   # probably ok
+            score -= 1   # Mid
         
         # also penalize high sequence similarity
         percent_match = (hsp.identities / hsp.align_length) * 100
         if percent_match > 90:
-            score -= 15  # way too similar
+            score -= 15  # Similar
         elif percent_match > 80:
             score -= 10
         elif percent_match > 70:

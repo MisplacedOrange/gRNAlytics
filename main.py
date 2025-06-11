@@ -133,7 +133,7 @@ for i, sequence in enumerate(grna_sequences):
         program="blastn",
         database="nt",
         sequence=sequence,
-        entrez_query="txid9606[ORGN]",  # Human sequences ony
+        entrez_query="txid9606[ORGN]",  # Human sequences only
         hitlist_size=50,  # Get more results for bigger analysis 
         word_size=7  # Smaller word size better for short gRNA sequeces
     )
@@ -148,7 +148,6 @@ for i, sequence in enumerate(grna_sequences):
 
     # Calculate enhanced score
     specificity_score = calculate_score(blast_record.alignments)
-    #we referenced this above earlier before we even ran the blast
 
     if not blast_record.alignments:
         print("No matches found - excellent specificity!")

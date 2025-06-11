@@ -5,12 +5,9 @@ This project was created to help students evaluate the specificity of CRISPR-Cas
 ## How to run this Python gRNA analyzer
 
 1. Clone this repo:
-
-git clone https://github.com/yourusername/crispr-grna-analyzer.git
-cd crispr-grna-analyzer
-
+`git clone https://github.com/MisplacedOrange/crispr-grna-analyzer.git`
+`cd crispr-grna-analyzer`
 2. Install dependencies:
 `pip install biopython numpy`
 Make sure AchillesCommonEssentialControls.csv is in the same folder.
-
 3. Run the script!

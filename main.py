@@ -5,7 +5,7 @@ import difflib
 import re
 from typing import List, Tuple
 
-# Display ASCII art
+# Display ASCII; Disclaimer: NOT 100% ACCURATE 
 print("""
 
 
@@ -15,26 +15,26 @@ print("""
 ██║░░██║██║░╚═══██╗██║░░██╗██║░░░░░██╔══██║██║██║╚██╔╝██║██╔══╝░░██╔══██╗░░░
 ██████╔╝██║██████╔╝╚█████╔╝███████╗██║░░██║██║██║░╚═╝░██║███████╗██║░░██║██╗
 ╚═════╝░╚═╝╚═════╝░░╚════╝░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚══════╝╚═╝░░╚═╝╚═╝
+---------------------------------------------------------------------------
 
+     █▄░█ █▀█ ▀█▀   ▄█ █▀█ █▀█ ▀░▄▀   ▄▀█ █▀▀ █▀▀ █░█ █▀█ ▄▀█ ▀█▀ █▀▀
+     █░▀█ █▄█ ░█░   ░█ █▄█ █▄█ ▄▀░▄   █▀█ █▄▄ █▄▄ █▄█ █▀▄ █▀█ ░█░ ██▄
 
-
-█▄░█ █▀█ ▀█▀   ▄█ █▀█ █▀█ ▀░▄▀   ▄▀█ █▀▀ █▀▀ █░█ █▀█ ▄▀█ ▀█▀ █▀▀
-█░▀█ █▄█ ░█░   ░█ █▄█ █▄█ ▄▀░▄   █▀█ █▄▄ █▄▄ █▄█ █▀▄ █▀█ ░█░ ██▄
-
-
+---------------------------------------------------------------------------
 """)
 
-Chromosome = (input("What chromsome is your gene in that you ran to find these gRNAs? "))
+Chromosome = (input("Which chromosome is your gene located on, based on the one you used to generate these gRNAs? "))
 
-# Get number of gRNAs from user
+# Input gRNAs
 numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
 
 grna_sequences = []
 
-# Get all gRNA sequences from user
+# Stores gRNAs from user
 for i in range(numberof_grnas):
     while True:
         seq = input(f"Enter sequence for gRNA #{i + 1}: \n").strip().upper()
+        # Check if sequence has correct parameters
         if set(seq).issubset({'A', 'T', 'C', 'G'}) and len(seq) > 0:
             grna_sequences.append(seq)
             break
@@ -43,7 +43,8 @@ for i in range(numberof_grnas):
 print("Starting BLAST search...")
 
 
-#BELOW WE WILL BE DEFINING ALL THE VARIABLES AND STUFF WE WILL BE THEN CALCULATING ALTER ON IN THE CODE 
+# Defining variables 
+
 # Load essential genes from CSV file
 essential_genes = set()
 with open("AchillesCommonEssentialControls.csv", "rt") as file:
@@ -53,7 +54,7 @@ with open("AchillesCommonEssentialControls.csv", "rt") as file:
         essential_genes.add(gene_clean)
 
 def extract_gene_info(title: str) -> Tuple[str, str]:
-    # Extract gene name and symbol from BLAST title -->
+    # Extract gene name and symbol from BLAST title
     gene_patterns = [
         r"gene[:\s]+([A-Z0-9\-_]+)",     # Scans for the gene name, which can include capital letters, digits, dashes, and underscores
         r"\(([A-Z0-9\-_]+)\)",  # Looks for gene names inside parentheses
@@ -80,6 +81,8 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
     
     # If gene is unknown, returns unknown
     return "Unknown", "Unknown" 
+
+# Calculations
 
 def calculate_score(alignments, target_chromosome):
     score = 100
@@ -132,11 +135,12 @@ def calculate_score(alignments, target_chromosome):
     return score
 
 scores = []
-#now we can process each gRNA sequence
+# Processes each gRNA sequence
 for i, sequence in enumerate(grna_sequences):
+    # Processing Update
     print(f"🧬 Processing gRNA {i+1}/{len(grna_sequences)} ({sequence[:15]}...)")
     
-    # Run BLAST with enhanced parameters for better analysis
+    # Run BLAST with enhanced parameters
     result_handle = NCBIWWW.qblast(
         program="blastn",
         database="nt",
@@ -146,7 +150,7 @@ for i, sequence in enumerate(grna_sequences):
         word_size=7  # Smaller word size better for short gRNA sequeces
     )
 
-    # Save BLAST results to XML file
+    # Save BLAST results as XML file
     with open(f"blast_result_{i + 1}.xml", "w") as out_file:
         out_file.write(result_handle.read())
 
@@ -154,7 +158,7 @@ for i, sequence in enumerate(grna_sequences):
     with open(f"blast_result_{i + 1}.xml") as result_file:
         blast_record = NCBIXML.read(result_file)
 
-    # Calculate enhanced score
+    # Calculate enchaned score
     specificity_score = calculate_score(blast_record.alignments)
 
     if not blast_record.alignments:
@@ -202,7 +206,7 @@ for i, sequence in enumerate(grna_sequences):
             print(f"Identity: {hsp.identities}/{hsp.align_length} ({identity_percent:.1f}%)")
             print(f"Match sequence: {hsp.sbjct[:60]}...")
 
-    # Store the calculated specificity score
+    # Store calculated specificity score
     scores.append(specificity_score)
     print(f"\nSpecificity score for gRNA #{i + 1}: {specificity_score}/100")
 
@@ -214,7 +218,7 @@ print(f"   Sequence: {grna_sequences[best_index]}")
 print(f"   Specificity Score: {scores[best_index]}/100")
 print("="*60 + "\n")
 
-# Display all scores for comparison
+# Display scores for comparison
 print("All gRNA specificity scores:")
 for i, score in enumerate(scores):
     print(f"gRNA #{i + 1}: {score}/100")

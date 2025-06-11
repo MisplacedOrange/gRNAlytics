@@ -5,7 +5,7 @@ This project was created to help students evaluate the specificity of CRISPR-Cas
 ## How to run gRNAlytics
 
 1. Clone this repo:
-- `git clone https://github.com/MisplacedOrange/crispr-grna-analyzer.git`
+- `git clone https://github.com/MisplacedOrange/gRNAlytics`
 - `cd crispr-grna-analyzer`
 2. Install dependencies:
 - `pip install biopython numpy`

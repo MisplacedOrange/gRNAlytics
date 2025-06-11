@@ -24,6 +24,8 @@ print("""
 
 """)
 
+Chromosome = (input("What chromsome is your gene in that you ran to find these gRNAs? "))
+
 # Get number of gRNAs from user
 numberof_grnas = int(input("How many gRNAs are you comparing? \n").strip())
 
@@ -78,43 +80,48 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
     
     return "Unknown", "Unknown"
 #if gene is unknown say its unknown
-def calculate_score(alignments) :  #expected to return variable hopefully works 
-    # Calculte the scores 
+def calculate_score(alignments, target_chromosome):
     score = 100
-    
+
     if not alignments:
-        return score  # No off-targets found is good
-    
-    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
+        return score  # No off-targets = perfect score
+
+    for i, alignment in enumerate(alignments[:10]):
+        title = alignment.title.lower()  # Needed for chromosome check
         hsp = alignment.hsps[0]
-        
-        # Penalty based on e-value, the lower the e-value, the higher chance of cutting off target so higher penalty
+
+        # Skip if on the same chromosome as the intended target
+        if f"chromosome {target_chromosome}" in title:
+            continue
+
+        # Penalize based on e-value
         if hsp.expect < 1e-10:
             score -= 20
         elif hsp.expect < 1e-5:
             score -= 10
         elif hsp.expect < 0.01:
-            score -= 5   # Bad
+            score -= 5
         else:
-            score -= 1   # Mid
-        
-        # also penalize high sequence similarity
+            score -= 1
+
+        # Penalize based on identity %
         percent_match = (hsp.identities / hsp.align_length) * 100
         if percent_match > 90:
-            score -= 15  # Similar
+            score -= 15
         elif percent_match > 80:
             score -= 10
         elif percent_match > 70:
             score -= 5
-    
-    
+
+    return max(0, score)
+
         
         # penalize mRNA hits a bit more since they might be transcripts
-        if "mRNA" in alignment.title or "transcript" in alignment.title:
+    if "mRNA" in alignment.title or "transcript" in alignment.title:
             score -= 3
         
         # later hits matter less than the first few
-        if i > 2:  # after the first 3 hits, reduce the penalty
+    if i > 2:  # after the first 3 hits, reduce the penalty
             score += 2  # give back some points
     
     # dont go below 0

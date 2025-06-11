@@ -1,6 +1,6 @@
 # CRISPR-Cas9 gRNA Specificity Analyzer 🔬🧬
-## A fully functional Python bioinformatics tool for analyzing and ranking CRISPR guide RNAs (gRNAs) based on off-target specificity using NCBI BLAST!
-This project was created to help students, researchers, and enthusiasts evaluate the specificity of CRISPR-Cas9 gRNAs by automating off-target analysis through BLAST, then scoring and ranking the results with customizable logic.
+## A functional Python bioinformatics tool for analyzing and ranking CRISPR guide RNAs (gRNAs) based on off-target specificity using NCBI BLAST
+This project was created to help students evaluate the specificity of CRISPR-Cas9 gRNAs by automating off-target analysis through BLAST, then scoring and ranking the results with customizable logic.
 
 ## How to run this Python gRNA analyzer
 

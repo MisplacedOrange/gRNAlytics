@@ -5,7 +5,7 @@
   <BlastOutput_version>BLASTN 2.17.0+</BlastOutput_version>
   <BlastOutput_reference>Stephen F. Altschul, Thomas L. Madden, Alejandro A. Sch&amp;auml;ffer, Jinghui Zhang, Zheng Zhang, Webb Miller, and David J. Lipman (1997), &quot;Gapped BLAST and PSI-BLAST: a new generation of protein database search programs&quot;, Nucleic Acids Res. 25:3389-3402.</BlastOutput_reference>
   <BlastOutput_db>core_nt</BlastOutput_db>
-  <BlastOutput_query-ID>Query_3943743</BlastOutput_query-ID>
+  <BlastOutput_query-ID>Query_6398067</BlastOutput_query-ID>
   <BlastOutput_query-def>No definition line</BlastOutput_query-def>
   <BlastOutput_query-len>20</BlastOutput_query-len>
   <BlastOutput_param>
@@ -21,16 +21,16 @@
 <BlastOutput_iterations>
 <Iteration>
   <Iteration_iter-num>1</Iteration_iter-num>
-  <Iteration_query-ID>Query_3943743</Iteration_query-ID>
+  <Iteration_query-ID>Query_6398067</Iteration_query-ID>
   <Iteration_query-def>No definition line</Iteration_query-def>
   <Iteration_query-len>20</Iteration_query-len>
 <Iteration_hits>
 <Hit>
   <Hit_num>1</Hit_num>
-  <Hit_id>gi|23499591|gb|AC113189.11|</Hit_id>
-  <Hit_def>Homo sapiens chromosome 17, clone RP11-104H15, complete sequence</Hit_def>
-  <Hit_accession>AC113189</Hit_accession>
-  <Hit_len>184349</Hit_len>
+  <Hit_id>gi|13493158|gb|AC013445.8|</Hit_id>
+  <Hit_def>Homo sapiens BAC clone RP11-489J10 from 2, complete sequence</Hit_def>
+  <Hit_accession>AC013445</Hit_accession>
+  <Hit_len>183960</Hit_len>
   <Hit_hsps>
     <Hsp>
       <Hsp_num>1</Hsp_num>
@@ -39,101 +39,101 @@
       <Hsp_evalue>0.146659</Hsp_evalue>
       <Hsp_query-from>1</Hsp_query-from>
       <Hsp_query-to>20</Hsp_query-to>
-      <Hsp_hit-from>136370</Hsp_hit-from>
-      <Hsp_hit-to>136389</Hsp_hit-to>
+      <Hsp_hit-from>67577</Hsp_hit-from>
+      <Hsp_hit-to>67596</Hsp_hit-to>
       <Hsp_query-frame>1</Hsp_query-frame>
       <Hsp_hit-frame>1</Hsp_hit-frame>
       <Hsp_identity>20</Hsp_identity>
       <Hsp_positive>20</Hsp_positive>
       <Hsp_gaps>0</Hsp_gaps>
       <Hsp_align-len>20</Hsp_align-len>
-      <Hsp_qseq>GGGGAGAGCTATTGGTGACT</Hsp_qseq>
-      <Hsp_hseq>GGGGAGAGCTATTGGTGACT</Hsp_hseq>
+      <Hsp_qseq>TTTGTGATACTCTCTCTTTC</Hsp_qseq>
+      <Hsp_hseq>TTTGTGATACTCTCTCTTTC</Hsp_hseq>
       <Hsp_midline>||||||||||||||||||||</Hsp_midline>
     </Hsp>
   </Hit_hsps>
 </Hit>
 <Hit>
   <Hit_num>2</Hit_num>
-  <Hit_id>gi|1655621825|ref|NG_027747.2|</Hit_id>
-  <Hit_def>Homo sapiens RNA polymerase II subunit A (POLR2A), RefSeqGene on chromosome 17</Hit_def>
-  <Hit_accession>NG_027747</Hit_accession>
-  <Hit_len>37238</Hit_len>
+  <Hit_id>gi|157672235|gb|AC208151.3|</Hit_id>
+  <Hit_def>Homo sapiens FOSMID clone ABC9-41257800G10 from chromosome 12, complete sequence</Hit_def>
+  <Hit_accession>AC208151</Hit_accession>
+  <Hit_len>41994</Hit_len>
   <Hit_hsps>
     <Hsp>
       <Hsp_num>1</Hsp_num>
-      <Hsp_bit-score>37.3537</Hsp_bit-score>
-      <Hsp_score>40</Hsp_score>
-      <Hsp_evalue>0.146659</Hsp_evalue>
+      <Hsp_bit-score>32.8453</Hsp_bit-score>
+      <Hsp_score>35</Hsp_score>
+      <Hsp_evalue>6.23609</Hsp_evalue>
       <Hsp_query-from>1</Hsp_query-from>
       <Hsp_query-to>20</Hsp_query-to>
-      <Hsp_hit-from>6909</Hsp_hit-from>
-      <Hsp_hit-to>6928</Hsp_hit-to>
+      <Hsp_hit-from>40317</Hsp_hit-from>
+      <Hsp_hit-to>40298</Hsp_hit-to>
       <Hsp_query-frame>1</Hsp_query-frame>
-      <Hsp_hit-frame>1</Hsp_hit-frame>
-      <Hsp_identity>20</Hsp_identity>
-      <Hsp_positive>20</Hsp_positive>
+      <Hsp_hit-frame>-1</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
       <Hsp_gaps>0</Hsp_gaps>
       <Hsp_align-len>20</Hsp_align-len>
-      <Hsp_qseq>GGGGAGAGCTATTGGTGACT</Hsp_qseq>
-      <Hsp_hseq>GGGGAGAGCTATTGGTGACT</Hsp_hseq>
-      <Hsp_midline>||||||||||||||||||||</Hsp_midline>
+      <Hsp_qseq>TTTGTGATACTCTCTCTTTC</Hsp_qseq>
+      <Hsp_hseq>TTTGTGATGCTCTCTCTTTC</Hsp_hseq>
+      <Hsp_midline>|||||||| |||||||||||</Hsp_midline>
     </Hsp>
   </Hit_hsps>
 </Hit>
 <Hit>
   <Hit_num>3</Hit_num>
-  <Hit_id>gi|4156135|gb|AC005058.1|</Hit_id>
-  <Hit_def>Homo sapiens BAC clone CTB-54D4 from 7q31, complete sequence</Hit_def>
-  <Hit_accession>AC005058</Hit_accession>
-  <Hit_len>182256</Hit_len>
+  <Hit_id>gi|11496330|gb|AC021070.24|</Hit_id>
+  <Hit_def>Homo sapiens 12 BAC RP11-460N10 (Roswell Park Cancer Institute Human BAC Library) complete sequence</Hit_def>
+  <Hit_accession>AC021070</Hit_accession>
+  <Hit_len>162978</Hit_len>
   <Hit_hsps>
     <Hsp>
       <Hsp_num>1</Hsp_num>
-      <Hsp_bit-score>31.9436</Hsp_bit-score>
-      <Hsp_score>34</Hsp_score>
+      <Hsp_bit-score>32.8453</Hsp_bit-score>
+      <Hsp_score>35</Hsp_score>
       <Hsp_evalue>6.23609</Hsp_evalue>
-      <Hsp_query-from>4</Hsp_query-from>
+      <Hsp_query-from>1</Hsp_query-from>
       <Hsp_query-to>20</Hsp_query-to>
-      <Hsp_hit-from>30366</Hsp_hit-from>
-      <Hsp_hit-to>30382</Hsp_hit-to>
+      <Hsp_hit-from>78591</Hsp_hit-from>
+      <Hsp_hit-to>78610</Hsp_hit-to>
       <Hsp_query-frame>1</Hsp_query-frame>
       <Hsp_hit-frame>1</Hsp_hit-frame>
-      <Hsp_identity>17</Hsp_identity>
-      <Hsp_positive>17</Hsp_positive>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
       <Hsp_gaps>0</Hsp_gaps>
-      <Hsp_align-len>17</Hsp_align-len>
-      <Hsp_qseq>GAGAGCTATTGGTGACT</Hsp_qseq>
-      <Hsp_hseq>GAGAGCTATTGGTGACT</Hsp_hseq>
-      <Hsp_midline>|||||||||||||||||</Hsp_midline>
+      <Hsp_align-len>20</Hsp_align-len>
+      <Hsp_qseq>TTTGTGATACTCTCTCTTTC</Hsp_qseq>
+      <Hsp_hseq>TTTGTGATGCTCTCTCTTTC</Hsp_hseq>
+      <Hsp_midline>|||||||| |||||||||||</Hsp_midline>
     </Hsp>
   </Hit_hsps>
 </Hit>
 <Hit>
   <Hit_num>4</Hit_num>
-  <Hit_id>gi|1547104506|ref|NG_029898.2|</Hit_id>
-  <Hit_def>Homo sapiens neuronal cell adhesion molecule (NRCAM), RefSeqGene on chromosome 7</Hit_def>
-  <Hit_accession>NG_029898</Hit_accession>
-  <Hit_len>316095</Hit_len>
+  <Hit_id>gi|21553246|gb|AC103560.2|</Hit_id>
+  <Hit_def>Homo sapiens chromosome 3 clone RP11-673E20, complete sequence</Hit_def>
+  <Hit_accession>AC103560</Hit_accession>
+  <Hit_len>186241</Hit_len>
   <Hit_hsps>
     <Hsp>
       <Hsp_num>1</Hsp_num>
-      <Hsp_bit-score>31.9436</Hsp_bit-score>
-      <Hsp_score>34</Hsp_score>
+      <Hsp_bit-score>32.8453</Hsp_bit-score>
+      <Hsp_score>35</Hsp_score>
       <Hsp_evalue>6.23609</Hsp_evalue>
-      <Hsp_query-from>4</Hsp_query-from>
+      <Hsp_query-from>1</Hsp_query-from>
       <Hsp_query-to>20</Hsp_query-to>
-      <Hsp_hit-from>38622</Hsp_hit-from>
-      <Hsp_hit-to>38606</Hsp_hit-to>
+      <Hsp_hit-from>68812</Hsp_hit-from>
+      <Hsp_hit-to>68831</Hsp_hit-to>
       <Hsp_query-frame>1</Hsp_query-frame>
-      <Hsp_hit-frame>-1</Hsp_hit-frame>
-      <Hsp_identity>17</Hsp_identity>
-      <Hsp_positive>17</Hsp_positive>
+      <Hsp_hit-frame>1</Hsp_hit-frame>
+      <Hsp_identity>19</Hsp_identity>
+      <Hsp_positive>19</Hsp_positive>
       <Hsp_gaps>0</Hsp_gaps>
-      <Hsp_align-len>17</Hsp_align-len>
-      <Hsp_qseq>GAGAGCTATTGGTGACT</Hsp_qseq>
-      <Hsp_hseq>GAGAGCTATTGGTGACT</Hsp_hseq>
-      <Hsp_midline>|||||||||||||||||</Hsp_midline>
+      <Hsp_align-len>20</Hsp_align-len>
+      <Hsp_qseq>TTTGTGATACTCTCTCTTTC</Hsp_qseq>
+      <Hsp_hseq>TTTGTGATACTCTCTCTCTC</Hsp_hseq>
+      <Hsp_midline>||||||||||||||||| ||</Hsp_midline>
     </Hsp>
   </Hit_hsps>
 </Hit>

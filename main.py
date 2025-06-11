@@ -74,44 +74,50 @@ def extract_gene_info(title: str) -> Tuple[str, str]:
     
     return "Unknown", "Unknown"
 #if gene is unknown say its unknown
-def calculate_score(alignments: List) :  #expected to return variable hopefully figners
+def calculate_score(blast_results) :  #expected to return variable hopefully works 
     # Calculte the scores 
-    base_score = 100
-    penalty = 0
+    score = 100
     
-    if not alignments:
-        return base_score  # No off-targets found is good
+    if not blast_results:
+        return score  # no hits = perfect
     
-    for i, alignment in enumerate(alignments[:10]):  # Analyze top 10 hits
-        hsp = alignment.hsps[0]
+    # look at the top 10 matches and penalize based on how bad they are
+    for i, alignment in enumerate(blast_results[:10]):
+        hsp = alignment.hsps[0]  # best hit for this alignment
         
-        # Penalty based on e-value ------ - - - - - - - - - - - - kfkdfjkdjf ---lower e-value means higher chance of cutting off target so higher penalty
-        if hsp.expect < 1e-10:
-            penalty += 20
-        elif hsp.expect < 1e-5:
-            penalty += 10
+        # penalize based on how likely this is to be cut
+        # lower e-value = more likely to cut = worse
+        if hsp.expect < 0.0000000001:  # 1e-10
+            score -= 20  # really bad
+        elif hsp.expect < 0.00001:  # 1e-5
+            score -= 10  # pretty bad
         elif hsp.expect < 0.01:
-            penalty += 5
+            score -= 5   # not great
         else:
-            penalty += 1
+            score -= 1   # probably ok
         
-        # Penalty based on sequence identity percentage
-        identity_percent = (hsp.identities / hsp.align_length) * 100
-        if identity_percent > 90:
-            penalty += 15
-        elif identity_percent > 80:
-            penalty += 10
-        elif identity_percent > 70:
-            penalty += 5
+        # also penalize high sequence similarity
+        percent_match = (hsp.identities / hsp.align_length) * 100
+        if percent_match > 90:
+            score -= 15  # way too similar
+        elif percent_match > 80:
+            score -= 10
+        elif percent_match > 70:
+            score -= 5
         
-        # Additional penalty for transcript matches (might potentil off-targets)
+        # penalize mRNA hits a bit more since they might be transcripts
         if "mRNA" in alignment.title or "transcript" in alignment.title:
-            penalty += 3
+            score -= 3
         
-        # Reduce penalty weight for later matches (less important)
-        penalty = penalty * (0.8 ** i)
+        # later hits matter less than the first few
+        if i > 2:  # after the first 3 hits, reduce the penalty
+            score += 2  # give back some points
     
-    return max(0, base_score - int(penalty))
+    # dont go below 0
+    if score < 0:
+        score = 0
+    
+    return score
 
 scores = []
 #now we can

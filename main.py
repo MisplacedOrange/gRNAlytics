@@ -158,7 +158,7 @@ for i, sequence in enumerate(grna_sequences):
     with open(f"blast_result_{i + 1}.xml") as result_file:
         blast_record = NCBIXML.read(result_file)
 
-    # Calculate enchaned score
+    # Calculate enchaned scores
     specificity_score = calculate_score(blast_record.alignments, Chromosome)
 
     if not blast_record.alignments:

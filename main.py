@@ -159,7 +159,7 @@ for i, sequence in enumerate(grna_sequences):
         blast_record = NCBIXML.read(result_file)
 
     # Calculate enchaned score
-    specificity_score = calculate_score(blast_record.alignments)
+    specificity_score = calculate_score(blast_record.alignments, Chromosome)
 
     if not blast_record.alignments:
         print("No matches found - excellent specificity!")
